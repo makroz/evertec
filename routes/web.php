@@ -14,8 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [\App\Http\Controllers\ProductsController::class, 'index'])->name('products');
-//Temporalmente Mientras se crea el controlador
-Route::post('/', [\App\Http\Controllers\ProductsController::class, 'carrito'])->name('carrito');
+Route::post('/carrito', [\App\Http\Controllers\CarritoController::class, 'store'])->name('carrito');
+Route::get('/carrito', [\App\Http\Controllers\CarritoController::class, 'index'])->name('carritoListar');
+Route::put('/carrito', [\App\Http\Controllers\CarritoController::class, 'update'])->name('carritoUpdate');
+Route::delete('/carrito', [\App\Http\Controllers\CarritoController::class, 'destroy'])->name('carritoDelete');
 Auth::routes();
 
 Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');

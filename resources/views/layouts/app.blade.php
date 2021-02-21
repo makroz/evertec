@@ -25,6 +25,8 @@
                     </a>
                 </div>
                 <nav class="space-x-4 text-gray-300 text-sm sm:text-base">
+                    <a class="no-underline hover:underline" href="{{ route('products') }}">Tienda</a>
+                    <a class="no-underline hover:underline" href="{{ route('carrito') }}">Ver Carrito</a>
                     @guest
                         <a class="no-underline hover:underline" href="{{ route('login') }}">{{ __('Login') }}</a>
                         @if (Route::has('register'))

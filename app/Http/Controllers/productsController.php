@@ -17,10 +17,4 @@ class ProductsController extends Controller
         $products=Products::all();
         return view('products.listar',compact('products'));
     }
-
-    public function carrito(Request $request)
-    {
-        dd($request);
-        return view('products.listar',compact('products'));
-    }
 }
