@@ -38,12 +38,12 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         if (!$request->validate([
             'customer_email'  => 'required|email',
             'customer_name'   => 'required',
-            'customer_mobile' => 'required'
-        ])){
+            'customer_mobile' => 'required',
+        ])) {
             return Redirect::route('carritoListar')->with(['status' => 'Error de Campos']);
         }
 
@@ -68,17 +68,22 @@ class OrdersController extends Controller
         $amount    = $carrito['quantity'] * $products->price;
         $reference = md5(date('YmdHis') . 'evertec');
 
+        $customer = [
+            'name'   => $request->customer_name,
+            'email'  => $request->customer_email,
+            'mobile' => $request->customer_mobile,
+        ];
+        session(['customer' => $customer]);
+        
         $requeste = [
-            'buyer'    => [
-                'name'   => $request->customer_name,
-                'email'   => $request->customer_email,
-                'mobile'   => $request->customer_mobile
-            ],
+            'buyer'      => $customer,
             'payment'    => [
-                'reference'   => $reference,
-                'description' => $products->name . " x " . $carrito['quantity'],
-                'allowPartial'=> false,
-                'amount'      => [
+                'reference'    => $reference,
+                'description'  => $products->name . " x " . $carrito['quantity'],
+                'allowPartial' => false,
+                'recurring'    => false,
+                'subscribe'    => false,
+                'amount'       => [
                     'currency' => 'USD',
                     'total'    => $amount,
                 ],
@@ -110,12 +115,7 @@ class OrdersController extends Controller
             $orders->process_url     = $processUrl;
             $orders->reference       = $reference;
             $orders->save();
-            session('customer',[
-            'email'  => $request->customer_email,
-            'name'   => $request->customer_name,
-            'mobile' => $request->customer_mobile
-            ]);
-        
+
             return Redirect::to($response->processUrl());
         } else {
             return Redirect::route('carritoListar')->with(['status' => $response->status()->message()]);
@@ -123,12 +123,12 @@ class OrdersController extends Controller
     }
 
     /**
-     * Intercept responde.
+     * Intercept response
      *
      */
     public function responseGet(Request $request, $reference)
     {
-        
+
         $placetopay = new PlacetoPay([
             'login'   => config('dnetix.login'),
             'tranKey' => config('dnetix.trankey'),
@@ -150,18 +150,45 @@ class OrdersController extends Controller
             if ($response->status()->isRejected()) {
                 $order->status = 'REJECTED';
             }
-            if (!empty($response->payment)){
-                $order->request_currency = $response->payment[0]->amount()->to()->currency();
-                $order->request_amount = $response->payment[0]->amount()->to()->total();
+
+            if ($response->status()->status()=='PENDING') {
+                session()->forget('carrito');
+            }
+
+            if (!empty($response->payment)) {
+                $order->request_currency          = $response->payment[0]->amount()->to()->currency();
+                $order->request_amount            = $response->payment[0]->amount()->to()->total();
                 $order->request_paymentMethodName = $response->payment[0]->paymentMethodName();
             }
             $order->request_status  = $response->status()->status();
             $order->request_message = $response->status()->message();
-            $order->request_date = strftime("%F %X",strtotime($response->status()->date()));
+            $order->request_date    = strftime("%F %X", strtotime($response->status()->date()));
             $order->save();
-            return Redirect::route('misordenes')->with(['status' => $response->status()->message(),'request_status'=>$response->status()->status()]);
+            if ($request->home){
+                return Redirect::route('home')->with(['status' => $response->status()->message()]);    
+            }
+            return Redirect::route('myOrders')->with(['status' => $response->status()->message(), 'request_status' => $response->status()->status()]);
         } else {
+            if ($request->home){
+                return Redirect::route('home')->with(['status' => $response->status()->message()]);    
+            }
             return Redirect::route('products')->with(['status' => $response->status()->message()]);
         }
+    }
+
+    /**
+     * Muestras las ordenes del Cliente
+     *
+     */
+    public function myOrders(Request $request)
+    {
+        $customer = session('customer');
+        if (!$customer){
+            echo "entro";
+            $customer['email']='guess';
+        }
+        $orders   = Orders::with('product:id,name')->Where('customer_email', $customer['email'])->orderBy('id', 'desc')->get();
+        return view('orders.myorders', ['orders' => $orders]);
+        
     }
 }

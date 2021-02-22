@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,7 @@ Route::delete('/carrito', [\App\Http\Controllers\CarritoController::class, 'dest
 Route::post('/orders', [\App\Http\Controllers\OrdersController::class, 'store'])->name('ordersSend');
 Route::post('/response/{reference}', [\App\Http\Controllers\OrdersController::class, 'response'])->name('response');
 Route::get('/response/{reference}', [\App\Http\Controllers\OrdersController::class, 'responseGet'])->name('responseget');
+Route::get('/myOrders', [\App\Http\Controllers\OrdersController::class, 'myOrders'])->name('myOrders');
 
 Auth::routes();
 Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');

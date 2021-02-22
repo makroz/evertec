@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Orders;
 
 class HomeController extends Controller
 {
@@ -23,6 +23,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        //DB::connection()->enableQueryLog();
+        //$status=session('request_status');
+        $customer = session('customer');
+        $orders   = Orders::with('product:id,name,price')->orderBy('id', 'desc')->get();
+        //print_r(DB::getQueryLog());
+        return view('home', ['orders' => $orders]);
     }
 }

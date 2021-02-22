@@ -16,6 +16,7 @@
                 <header class="font-semibold bg-gray-200 text-gray-700 py-5 px-6 sm:py-6 sm:px-8 sm:rounded-t-md">
                     CARRITO DE COMPRAS
                 </header>
+                
                 <div class="w-full p-6">
                     <p class="text-gray-700">
 
@@ -60,18 +61,9 @@
                                         </div>
 
                                     </section>
-
-
-
-
-
-
-
                                 </div>
                                 <!-- ... -->
                                 <div>
-
-
                                     <section
                                         class="flex flex-col break-words bg-white sm:border-1 sm:rounded-md sm:shadow-sm sm:shadow-lg">
 
@@ -92,7 +84,7 @@
 
                                                 <input id="customer_email" type="email"
                                                     class="form-input w-full @error('customer_email') border-red-500 @enderror"
-                                                    name="customer_email" value="{{ old('customer_email') }}" required
+                                                    name="customer_email" value="{{ session('customer')?session('customer')['email']:old('customer_email') }}" required
                                                     autocomplete="customer_email" autofocus>
 
                                                 @error('customer_email')
@@ -110,7 +102,7 @@
 
                                                 <input id="customer_name" type="text"
                                                     class="form-input w-full @error('customer_name') border-red-500 @enderror"
-                                                    name="customer_name" value="{{ old('customer_name') }}" required
+                                                    name="customer_name" value="{{ session('customer')?session('customer')['name']:old('customer_name') }}" required
                                                     autocomplete="customer_name" autofocus>
 
                                                 @error('customer_name')
@@ -128,7 +120,7 @@
 
                                                 <input id="customer_name" type="text"
                                                     class="form-input w-full @error('customer_mobile') border-red-500 @enderror"
-                                                    name="customer_mobile" value="{{ old('customer_mobile') }}" required
+                                                    name="customer_mobile" value="{{ session('customer')?session('customer')['mobile']:old('customer_mobile') }}" required
                                                     autocomplete="customer_mobile" autofocus>
 
                                                 @error('customer_mobile')

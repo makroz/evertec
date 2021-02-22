@@ -11,17 +11,26 @@
                 </div>
             @endif
 
+            @if (session('request_status') == 'REJECTED')
+                <div class="text-lg text-grey-700  px-3 py-4 mb-4">
+                    Su pedido fue Cancelado, desea Intentarlo Otra Vez?
+                    <a class="underline text-blue-500 text-sm" href="{{ route('carrito') }}">
+                        Click Aqui para voolver a intentarlo
+                    </a>
+
+                </div>
+            @endif
+
             <section class="flex flex-col break-words bg-white sm:border-1 sm:rounded-md sm:shadow-sm sm:shadow-lg">
 
                 <header class="font-semibold bg-gray-200 text-gray-700 py-5 px-6 sm:py-6 sm:px-8 sm:rounded-t-md">
-                    Listado Completo de Ventas de la Tienda
+                    MIS PEDIDOS
                 </header>
-
                 <div class="w-full p-6">
                     <p class="text-gray-700">
-                    <p class="text-gray-700">
+
                         @if (count($orders)>0)
-                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 
                                 @foreach ($orders as $order)
                                     <div>
@@ -33,36 +42,15 @@
 
                                             <div
                                                 class="p-4 cursor-pointer bg-white rounded w-full shadow-lg select-none overflow-hidden mx-auto">
-                                                <p class="text-grey-500 group-hover:text-white mb-2 text-xs">
-                                                    Fecha: {{ $order->created_at }} <br>
-                                                    Referencia: {{ $order->reference }}
+                                                <p class="text-grey-500 group-hover:text-white mb-2">
+                                                    Fecha: {{ $order->created_at }}
                                                 </p>
-                                                <fieldset class="border-2 p-2 ">
-                                                    <legend class=" px-1 font-semibold">Información Cliente</legend>
-                                                    Nombre: {{ $order->customer_name }} <br>
-                                                    Email: {{ $order->customer_email }} <br>
-                                                    Telefono: {{ $order->customer_mobile }} <br>
-                                                </fieldset>
-
-                                                <fieldset class="border-2 p-2 ">
-                                                    <legend class=" px-1 font-semibold">Informacion del Producto</legend>
-                                                    {{ $order->product->name }} <br>
-                                                    Precio: {{ $order->product->price }} <br>
+                                                <p class="font-semibold text-lg mb-1 text-gray-900 group-hover:text-white">
+                                                    {{ $order->product->name }}</p>
+                                                <p class="text-green-500 group-hover:text-white mb-2">
                                                     Cantidad: {{ $order->quantity }} <br>
-                                                    Total: USD {{ $order->amount }}
-                                                </fieldset>
-
-                                                <fieldset class="border-2 p-2 ">
-                                                    <legend class=" px-1 font-semibold">Informacion del Pago</legend>
-                                                    Request Id: {{ $order->request_id }} <br>
-                                                    Fecha de Procesado: <br> {{ $order->request_date }} <br>
-                                                    Total Recibido: {{ $order->request_currency }}
-                                                    {{ $order->request_amount }} <br>
-                                                    Metodo de Pago: {{ $order->request_paymentMethodName }} <br>
-                                                    Status de Pago: {{ $order->request_status }} <br>
-                                                    Mensaje del Pago: {{ $order->request_message }} <br>
-
-                                                </fieldset>
+                                                    Total Pedido: USD {{ $order->amount }}
+                                                </p>
 
                                                 @if ($order->status == 'PAYED')
                                                     <p class="text-grey-900 group-hover:text-white mb-2">
@@ -81,8 +69,8 @@
                                                         Status: PENDIENTE
                                                     </p>
                                                     <a class="underline text-blue-500 text-sm"
-                                                        href="/response/{{ $order->reference }}?home=1">
-                                                        Click Aqui para Verificar el PAGO Nuevamente
+                                                        href="{{ $order->process_url }}">
+                                                        Click Aqui para ir a Terminar el PAGO
                                                     </a>
                                                 @endif
 
@@ -98,7 +86,6 @@
                             </div>
                         @endif
 
-                    </p>
                     </p>
                 </div>
             </section>
