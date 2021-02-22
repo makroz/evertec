@@ -32,10 +32,10 @@
                                 <form class="w-full px-6 space-y-6 sm:px-10 sm:space-y-8" method="POST"
                                     action="{{ route('carrito') }}">
                                     @csrf
-                                    <input type="hidden" value="{{ $product->id}}" name="id">
+                                    <input type="hidden" value="{{ $product->id }}" name="id">
                                     <button type="submit"
                                         class="m-4  center bg-blue-500 active:bg-blue-700 text-white font-semibold hover:text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline transition transform ease-in-out duration-300 hover:-translate-y-1 hover:scale-110">
-                                            Adicionar al Carrito
+                                        Adicionar al Carrito
                                     </button>
                                 </form>
 

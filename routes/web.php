@@ -18,7 +18,7 @@ Route::post('/carrito', [\App\Http\Controllers\CarritoController::class, 'store'
 Route::get('/carrito', [\App\Http\Controllers\CarritoController::class, 'index'])->name('carritoListar');
 Route::put('/carrito', [\App\Http\Controllers\CarritoController::class, 'update'])->name('carritoUpdate');
 Route::delete('/carrito', [\App\Http\Controllers\CarritoController::class, 'destroy'])->name('carritoDelete');
-Auth::routes();
 
+Auth::routes();
 Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
