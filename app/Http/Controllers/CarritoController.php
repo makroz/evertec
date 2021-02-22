@@ -39,13 +39,11 @@ class CarritoController extends Controller
         // esta prueba, sino habria que discriminar aqui para 
         // identificar cada producto en el carrito
         if (!$request->has('id')){
-            
             return route('products');
         }
         $carrito=['id'=>0,'quantity'=>0];
         if (session()->has('carrito')){
             $carrito=session('carrito');
-            print_r($carrito);
         }
         $carrito['id']=$request->id;
         $carrito['quantity']++;

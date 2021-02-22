@@ -80,22 +80,22 @@
                                             DATOS DEL COMPRADOR
                                         </header>
 
-                                        <form class="w-full px-6 space-y-6 sm:px-10 sm:space-y-8" method="GET"
-                                            action="{{ route('carrito') }}">
+                                        <form class="w-full px-6 space-y-6 sm:px-10 sm:space-y-8" method="POST"
+                                            action="{{ route('ordersSend') }}">
                                             @csrf
 
                                             <div class="flex flex-wrap">
-                                                <label for="customer-email"
+                                                <label for="customer_email"
                                                     class="block text-gray-700 text-sm font-bold mb-1 sm:mb-4">
                                                     E-Mail
                                                 </label>
 
-                                                <input id="customer-email" type="email"
-                                                    class="form-input w-full @error('customer-email') border-red-500 @enderror"
-                                                    name="customer-email" value="{{ old('customer-email') }}" required
-                                                    autocomplete="customer-email" autofocus>
+                                                <input id="customer_email" type="email"
+                                                    class="form-input w-full @error('customer_email') border-red-500 @enderror"
+                                                    name="customer_email" value="{{ old('customer_email') }}" required
+                                                    autocomplete="customer_email" autofocus>
 
-                                                @error('customer-email')
+                                                @error('customer_email')
                                                     <p class="text-red-500 text-xs italic mt-4">
                                                         {{ $message }}
                                                     </p>
@@ -103,17 +103,17 @@
                                             </div>
 
                                             <div class="flex flex-wrap">
-                                                <label for="customer-name"
+                                                <label for="customer_name"
                                                     class="block text-gray-700 text-sm font-bold mb-1 sm:mb-4">
                                                     Nombre
                                                 </label>
 
-                                                <input id="customer-name" type="text"
-                                                    class="form-input w-full @error('customer-name') border-red-500 @enderror"
-                                                    name="customer-name" value="{{ old('customer-name') }}" required
-                                                    autocomplete="customer-name" autofocus>
+                                                <input id="customer_name" type="text"
+                                                    class="form-input w-full @error('customer_name') border-red-500 @enderror"
+                                                    name="customer_name" value="{{ old('customer_name') }}" required
+                                                    autocomplete="customer_name" autofocus>
 
-                                                @error('customer-name')
+                                                @error('customer_name')
                                                     <p class="text-red-500 text-xs italic mt-4">
                                                         {{ $message }}
                                                     </p>
@@ -121,17 +121,17 @@
                                             </div>
 
                                             <div class="flex flex-wrap">
-                                                <label for="customer-mobile"
+                                                <label for="customer_mobile"
                                                     class="block text-gray-700 text-sm font-bold mb-1 sm:mb-4">
                                                     Mobile
                                                 </label>
 
-                                                <input id="customer-name" type="text"
-                                                    class="form-input w-full @error('customer-mobile') border-red-500 @enderror"
-                                                    name="customer-mobile" value="{{ old('customer-mobile') }}" required
-                                                    autocomplete="customer-mobile" autofocus>
+                                                <input id="customer_name" type="text"
+                                                    class="form-input w-full @error('customer_mobile') border-red-500 @enderror"
+                                                    name="customer_mobile" value="{{ old('customer_mobile') }}" required
+                                                    autocomplete="customer_mobile" autofocus>
 
-                                                @error('customer-mobile')
+                                                @error('customer_mobile')
                                                     <p class="text-red-500 text-xs italic mt-4">
                                                         {{ $message }}
                                                     </p>
@@ -141,7 +141,7 @@
                                             <div class="flex flex-wrap">
                                                 <button type="submit"
                                                     class="w-full select-none font-bold whitespace-no-wrap p-3 rounded-lg text-base leading-normal no-underline text-gray-100 bg-blue-500 hover:bg-blue-700 sm:py-4">
-                                                    Enviar PEDIDO
+                                                    Enviar Pedido
                                                 </button>
                                             </div>
                                         </form>
