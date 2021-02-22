@@ -22,10 +22,13 @@ class UpdateOrdersTable extends Migration
             $table->string('reference', 32);
             $table->string('request_message', 200);
             $table->string('request_status', 10);
-            $table->decimal('request_amount');
-            $table->string('request_currency', 4);
+            $table->decimal('request_amount')->nullable();
+            $table->string('request_currency', 4)->nullable();
+            $table->decimal('request_factor')->nullable();
+            $table->string('request_paymentMethodName',20)->nullable();
             $table->integer('products_id')->unsigned();
             $table->foreign('products_id')->references('id')->on('products');
+            $table->index('reference');
         });
     }
 
@@ -48,6 +51,8 @@ class UpdateOrdersTable extends Migration
                 'request_status',
                 'request_amount',
                 'request_currency',
+                'request_paymentMethodName',
+                'request_factor',
                 'products_id'
             ]);
         });
