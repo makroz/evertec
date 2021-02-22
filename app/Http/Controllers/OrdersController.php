@@ -10,24 +10,22 @@ use Illuminate\Support\Facades\Redirect;
 
 class OrdersController extends Controller
 {
+    
     /**
-     * Display a listing of the resource.
+     * Devuelve el objeto de Autenticacion para PlaceTopay
      *
-     * @return \Illuminate\Http\Response
+     * @return Objetc
      */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    private function p2pAuth(){
+        return new PlacetoPay([
+            'login'   => config('dnetix.login'),
+            'tranKey' => config('dnetix.trankey'),
+            'url'     => config('dnetix.url'),
+            'rest'    => [
+                'timeout'         => 45,
+                'connect_timeout' => 30,
+            ],
+        ]);
     }
 
     /**
@@ -38,7 +36,6 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-
         if (!$request->validate([
             'customer_email'  => 'required|email',
             'customer_name'   => 'required',
@@ -55,15 +52,7 @@ class OrdersController extends Controller
 
         $products = Products::find($carrito['id']);
 
-        $placetopay = new PlacetoPay([
-            'login'   => config('dnetix.login'),
-            'tranKey' => config('dnetix.trankey'),
-            'url'     => config('dnetix.url'),
-            'rest'    => [
-                'timeout'         => 45,
-                'connect_timeout' => 30,
-            ],
-        ]);
+        $placetopay = $this->p2pAuth();
 
         $amount    = $carrito['quantity'] * $products->price;
         $reference = md5(date('YmdHis') . 'evertec');
@@ -128,20 +117,10 @@ class OrdersController extends Controller
      */
     public function responseGet(Request $request, $reference)
     {
-
-        $placetopay = new PlacetoPay([
-            'login'   => config('dnetix.login'),
-            'tranKey' => config('dnetix.trankey'),
-            'url'     => config('dnetix.url'),
-            'rest'    => [
-                'timeout'         => 45,
-                'connect_timeout' => 30,
-            ],
-        ]);
+        $placetopay = $this->p2pAuth();
 
         $order    = Orders::where('reference', $reference)->first();
         $response = $placetopay->query($order->request_id);
-        //dd($response);
         if ($response->isSuccessful()) {
             if ($response->status()->isApproved()) {
                 $order->status = 'PAYED';
@@ -187,8 +166,10 @@ class OrdersController extends Controller
             echo "entro";
             $customer['email']='guess';
         }
-        $orders   = Orders::with('product:id,name')->Where('customer_email', $customer['email'])->orderBy('id', 'desc')->get();
+        $orders   = Orders::with('product:id,name')
+            ->Where('customer_email', $customer['email'])
+            ->orderBy('id', 'desc')
+            ->get();
         return view('orders.myorders', ['orders' => $orders]);
-        
     }
 }

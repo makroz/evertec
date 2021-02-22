@@ -29,7 +29,7 @@
                 <div class="w-full p-6">
                     <p class="text-gray-700">
 
-                        @if (count($orders)>0)
+                        @if (count($orders) > 0)
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 
                                 @foreach ($orders as $order)
@@ -46,22 +46,26 @@
                                                     Fecha: {{ $order->created_at }}
                                                 </p>
                                                 <p class="font-semibold text-lg mb-1 text-gray-900 group-hover:text-white">
-                                                    {{ $order->product->name }}</p>
+                                                    {{ $order->product->name }}
+                                                </p>
                                                 <p class="text-green-500 group-hover:text-white mb-2">
-                                                    Cantidad: {{ $order->quantity }} <br>
+                                                    Cantidad: {{ $order->quantity }}
+                                                    <br>
                                                     Total Pedido: USD {{ $order->amount }}
                                                 </p>
 
                                                 @if ($order->status == 'PAYED')
                                                     <p class="text-grey-900 group-hover:text-white mb-2">
                                                         Status: PAGADO
-                                                    </p><br>
+                                                    </p>
+                                                    <br>
                                                 @endif
 
                                                 @if ($order->status == 'REJECTED')
                                                     <p class="text-gey-200 group-hover:text-white mb-2 line-through ">
                                                         Status: ANULADA
-                                                    </p><br>
+                                                    </p>
+                                                    <br>
                                                 @endif
 
                                                 @if ($order->status == 'CREATED')
@@ -81,7 +85,7 @@
 
                             </div>
                         @else
-                            <div class="">
+                            <div>
                                 No Tiene ningun Pedido
                             </div>
                         @endif

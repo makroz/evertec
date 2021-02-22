@@ -20,7 +20,7 @@
                 <div class="w-full p-6">
                     <p class="text-gray-700">
                     <p class="text-gray-700">
-                        @if (count($orders)>0)
+                        @if (count($orders) > 0)
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
 
                                 @foreach ($orders as $order)
@@ -34,26 +34,32 @@
                                             <div
                                                 class="p-4 cursor-pointer bg-white rounded w-full shadow-lg select-none overflow-hidden mx-auto">
                                                 <p class="text-grey-500 group-hover:text-white mb-2 text-xs">
-                                                    Fecha: {{ $order->created_at }} <br>
+                                                    Fecha: {{ $order->created_at }}
+                                                    <br>
                                                     Referencia: {{ $order->reference }}
                                                 </p>
                                                 <fieldset class="border-2 p-2 ">
                                                     <legend class=" px-1 font-semibold">Información Cliente</legend>
-                                                    Nombre: {{ $order->customer_name }} <br>
-                                                    Email: {{ $order->customer_email }} <br>
-                                                    Telefono: {{ $order->customer_mobile }} <br>
+                                                    Nombre: {{ $order->customer_name }}
+                                                    <br>
+                                                    Email: {{ $order->customer_email }}
+                                                    <br>
+                                                    Telefono: {{ $order->customer_mobile }}
                                                 </fieldset>
 
                                                 <fieldset class="border-2 p-2 ">
-                                                    <legend class=" px-1 font-semibold">Informacion del Producto</legend>
-                                                    {{ $order->product->name }} <br>
-                                                    Precio: {{ $order->product->price }} <br>
-                                                    Cantidad: {{ $order->quantity }} <br>
+                                                    <legend class="px-1 font-semibold">Informacion del Producto</legend>
+                                                    {{ $order->product->name }}
+                                                    <br>
+                                                    Precio: {{ $order->product->price }}
+                                                    <br>
+                                                    Cantidad: {{ $order->quantity }}
+                                                    <br>
                                                     Total: USD {{ $order->amount }}
                                                 </fieldset>
 
                                                 <fieldset class="border-2 p-2 ">
-                                                    <legend class=" px-1 font-semibold">Informacion del Pago</legend>
+                                                    <legend class="px-1 font-semibold">Informacion del Pago</legend>
                                                     Request Id: {{ $order->request_id }} <br>
                                                     Fecha de Procesado: <br> {{ $order->request_date }} <br>
                                                     Total Recibido: {{ $order->request_currency }}
@@ -93,7 +99,7 @@
 
                             </div>
                         @else
-                            <div class="">
+                            <div>
                                 No Tiene ningun Pedido
                             </div>
                         @endif

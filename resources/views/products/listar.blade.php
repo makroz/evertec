@@ -22,19 +22,27 @@
 
                         @foreach ($products as $product)
 
-                            <div
-                                class="group hover:bg-gray-900 p-4 cursor-pointer bg-white rounded max-w-xs w-full shadow-lg select-none overflow-hidden mx-auto">
+                            <div class="group hover:bg-gray-900 p-4 cursor-pointer bg-white rounded max-w-xs
+                                    w-full shadow-lg select-none overflow-hidden mx-auto">
                                 <p class="font-semibold text-lg mb-1 text-gray-900 group-hover:text-white">
-                                    {{ $product->id }} - {{ $product->name }}</p>
-                                <p class="text-gray-700 group-hover:text-white mb-2">{{ $product->descrip }}</p>
-                                <p class="text-red-700 group-hover:text-white mb-2"> USD {{ $product->price }}</p>
+                                    {{ $product->id }} - {{ $product->name }}
+                                </p>
+                                <p class="text-gray-700 group-hover:text-white mb-2">
+                                    {{ $product->descrip }}
+                                </p>
+                                <p class="text-red-700 group-hover:text-white mb-2">
+                                    USD {{ $product->price }}
+                                </p>
                                 <hr>
+
                                 <form class="w-full px-6 space-y-6 sm:px-10 sm:space-y-8" method="POST"
                                     action="{{ route('carrito') }}">
                                     @csrf
                                     <input type="hidden" value="{{ $product->id }}" name="id">
                                     <button type="submit"
-                                        class="m-4  center bg-blue-500 active:bg-blue-700 text-white font-semibold hover:text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline transition transform ease-in-out duration-300 hover:-translate-y-1 hover:scale-110">
+                                        class="m-4  center bg-blue-500 active:bg-blue-700 text-white font-semibold
+                                            hover:text-white py-2 px-4 rounded focus:outline-none focus:shadow-outline
+                                            transition transform ease-in-out duration-300 hover:-translate-y-1 hover:scale-110">
                                         Adicionar al Carrito
                                     </button>
                                 </form>
