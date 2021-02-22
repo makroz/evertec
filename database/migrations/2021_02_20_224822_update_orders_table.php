@@ -16,13 +16,16 @@ class UpdateOrdersTable extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->integer('quantity');
             $table->decimal('amount');
-            $table->datetime('paid_date')->nullable();
-            $table->integer('clients_id')->unsigned();
-            $table->foreign('clients_id')->references('id')->on('clients')->onUpdate('cascade');
+            $table->datetime('request_date')->nullable();
+            $table->datetime('request_id')->nullable();
+            $table->datetime('process_url')->nullable();
+            $table->string('reference', 32);
+            $table->string('request_message', 200);
+            $table->string('request_status', 10);
+            $table->decimal('request_amount');
+            $table->string('request_currency', 4);
             $table->integer('products_id')->unsigned();
-            $table->foreign('products_id')->references('id')->on('products')->onUpdate('cascade');
-            $table->integer('payments_id')->unsigned();
-            $table->foreign('payments_id')->references('id')->on('payments')->onUpdate('cascade');
+            $table->foreign('products_id')->references('id')->on('products');
         });
     }
 
@@ -34,15 +37,19 @@ class UpdateOrdersTable extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('quantity');
-            $table->dropColumn('amount');
-            $table->datetime('paid_date');
-            $table->dropColumn('clients_id');
-            $table->dropForeign('clients_orders_id_foreign');
-            $table->dropColumn('products_id');
-            $table->dropForeign('products_orders_id_foreign');
-            $table->dropColumn('payments_id');
-            $table->dropForeign('payments_orders_id_foreign');
+            $table->dropColumns([
+                'quantity',
+                'amount',
+                'request_date',
+                'request_id',
+                'process_url',
+                'reference',
+                'request_message',
+                'request_status',
+                'request_amount',
+                'request_currency',
+                'products_id'
+            ]);
         });
     }
 }
