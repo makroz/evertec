@@ -24,3 +24,8 @@ Esta es una Prueba Tecnica, presentada por Mario Alberto Guzman Mendoza, para la
 ## Testing
 
 Este proyecto cuenta con pruebas de test Automatico
+
+-   configurar en el archivo phpunit.xml
+    la base de datos de pruebas para no afectar la que se use en produccion.env
+    <server name="DB_CONNECTION" value="mysql"/>
+    <server name="DB_DATABASE" value="evertec_test"/>
