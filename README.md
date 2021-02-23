@@ -14,11 +14,9 @@ Esta es una Prueba Tecnica, presentada por Mario Alberto Guzman Mendoza, para la
         DNETIX_LOGIN="your login here"
         DNETIX_TRANKEY="your TRANKEY here"
         DNETIX_URL="your URL here"
--   Configurar la variable APP_URL correctamente con el dominio usado
+-   Importante Configurar la variable APP_URL correctamente con el dominio usado aunque sea localhost
 -   composer install
--   php artisan ui tailwindcss --auth
--   npm i --save-dev laravel-mix@latest
--   Ejecutar las migraciones y los seed
+-   Ejecutar las migraciones y los seed: php artisan migrate --seed
 -   npm install && npm run dev
 
 ## Testing
