@@ -19,6 +19,8 @@ Esta es una Prueba Tecnica, presentada por Mario Alberto Guzman Mendoza, para la
 -   Ejecutar las migraciones y los seed: php artisan migrate --seed
 -   npm install && npm run dev
 
+## Parte ADM de la tienda
+- Para ingresar a ADMINISTRAR TIENDA debe primero crearse un usuario en el menu REGISTRARSE, con ese permiso podra ingresar a ADMINISTRAR TIENDA
 ## Testing
 
 Este proyecto cuenta con pruebas de test Automatico
