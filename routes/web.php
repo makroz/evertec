@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
  Route::get('/carrito', [\App\Http\Controllers\CarritoController::class, 'index'])->name('carritoList');
  Route::delete('/carrito', [\App\Http\Controllers\CarritoController::class, 'destroy'])->name('carritoDel');
  Route::post('/orders', [\App\Http\Controllers\OrdersController::class, 'store'])->name('ordersSend');
- Route::get('/response/{reference}', [\App\Http\Controllers\OrdersController::class, 'responseGet'])->name('responseget');
+ Route::get('/response/{reference}', [\App\Http\Controllers\OrdersController::class, 'responseGet'])->name('responseGet');
  Route::get('/myOrders', [\App\Http\Controllers\OrdersController::class, 'myOrders'])->name('myOrders');
 
 Auth::routes();

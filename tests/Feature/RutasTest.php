@@ -28,11 +28,11 @@ class RutasTest extends TestCase
     {
         $response = $this->get(route('carritoList'));
         $response->assertStatus(200);
-
-        $response = $this->post(route('carritoList'));
+        //No se especifico Producto
+        $response = $this->post(route('carritoAdd'));
         $response->assertStatus(302);
 
-        $response = $this->delete('/carrito');
+        $response = $this->delete(route('carritoDel'));
         $response->assertStatus(302);
     }
 
@@ -43,10 +43,10 @@ class RutasTest extends TestCase
      */
     public function testExistenRutasOrdenes()
     {
-        $response = $this->post('/orders');
+        $response = $this->post(route('ordersSend'));
         $response->assertStatus(302);
 
-        $response = $this->get('/myOrders');
+        $response = $this->get(route('myOrders'));
         $response->assertStatus(200);
 
     }
@@ -58,7 +58,7 @@ class RutasTest extends TestCase
      */
     public function testExistenRutasRespondenP2P()
     {
-        $response = $this->get('/response/445544');
+        $response = $this->get(route('responseGet','assasas'));
         $response->assertStatus(302);
     }
 

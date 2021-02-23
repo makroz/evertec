@@ -39,7 +39,7 @@ class CarritoController extends Controller
         // esta prueba, sino habria que discriminar aqui para 
         // identificar cada producto en el carrito
         if (!$request->has('id')){
-            return Redirect::route('products');
+            return Redirect::route('products')->with(['status' => 'No se especifico Producto']);
         }
         $carrito=['id'=>0,'quantity'=>0];
         if (session()->has('carrito')){
