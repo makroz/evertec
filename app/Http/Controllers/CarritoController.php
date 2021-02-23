@@ -39,7 +39,7 @@ class CarritoController extends Controller
         // esta prueba, sino habria que discriminar aqui para 
         // identificar cada producto en el carrito
         if (!$request->has('id')){
-            return route('products');
+            return Redirect::route('products');
         }
         $carrito=['id'=>0,'quantity'=>0];
         if (session()->has('carrito')){
@@ -48,7 +48,7 @@ class CarritoController extends Controller
         $carrito['id']=$request->id;
         $carrito['quantity']++;
         session(['carrito'=>$carrito]);
-        return Redirect::route('carritoListar');
+        return Redirect::route('carritoList');
     }
 
     /**
@@ -60,6 +60,6 @@ class CarritoController extends Controller
     public function destroy(Request $request)
     {
         session()->forget('carrito');
-        return redirect()->route('products');
+        return Redirect::route('products');
     }
 }

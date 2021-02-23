@@ -50,7 +50,7 @@
                                             <hr>
 
                                             <form class="w-full px-6 space-y-6 sm:px-10 sm:space-y-8 text-center"
-                                                method="POST" action="{{ route('carrito') }}">
+                                                method="POST" action="{{ route('carritoDel') }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="hidden" value="{{ $product->id }}" name="id">

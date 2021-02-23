@@ -36,7 +36,7 @@
                                 <hr>
 
                                 <form class="w-full px-6 space-y-6 sm:px-10 sm:space-y-8" method="POST"
-                                    action="{{ route('carrito') }}">
+                                    action="{{ route('carritoAdd') }}">
                                     @csrf
                                     <input type="hidden" value="{{ $product->id }}" name="id">
                                     <button type="submit"

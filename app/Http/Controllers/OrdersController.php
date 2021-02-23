@@ -10,13 +10,14 @@ use Illuminate\Support\Facades\Redirect;
 
 class OrdersController extends Controller
 {
-    
+
     /**
      * Devuelve el objeto de Autenticacion para PlaceTopay
      *
      * @return Objetc
      */
-    private function p2pAuth(){
+    private function p2pAuth()
+    {
         return new PlacetoPay([
             'login'   => config('dnetix.login'),
             'tranKey' => config('dnetix.trankey'),
@@ -41,13 +42,13 @@ class OrdersController extends Controller
             'customer_name'   => 'required',
             'customer_mobile' => 'required',
         ])) {
-            return Redirect::route('carritoListar')->with(['status' => 'Error de Campos']);
+            return Redirect::route('carritoList')->with(['status' => 'Error de Campos']);
         }
 
         if (session()->has('carrito')) {
             $carrito = session('carrito');
         } else {
-            return Redirect::route('carritoListar');
+            return Redirect::route('carritoList');
         }
 
         $products = Products::find($carrito['id']);
@@ -63,7 +64,7 @@ class OrdersController extends Controller
             'mobile' => $request->customer_mobile,
         ];
         session(['customer' => $customer]);
-        
+
         $requeste = [
             'buyer'      => $customer,
             'payment'    => [
@@ -86,7 +87,7 @@ class OrdersController extends Controller
         try {
             $response = $placetopay->request($requeste);
         } catch (\Exception $e) {
-            return Redirect::route('carritoListar')->with(['status' => $e->getMessage()]);
+            return Redirect::route('carritoList')->with(['status' => $e->getMessage()]);
         }
 
         if ($response->isSuccessful()) {
@@ -107,7 +108,7 @@ class OrdersController extends Controller
 
             return Redirect::to($response->processUrl());
         } else {
-            return Redirect::route('carritoListar')->with(['status' => $response->status()->message()]);
+            return Redirect::route('carritoList')->with(['status' => $response->status()->message()]);
         }
     }
 
@@ -119,8 +120,16 @@ class OrdersController extends Controller
     {
         $placetopay = $this->p2pAuth();
 
-        $order    = Orders::where('reference', $reference)->first();
-        $response = $placetopay->query($order->request_id);
+        $order = Orders::where('reference', $reference)->first();
+        if ($order) {
+            $response = $placetopay->query($order->request_id);
+        } else {
+            if ($request->home) {
+                return Redirect::route('home')->with(['status' => 'Referencia No existe']);
+            }
+            return Redirect::route('myOrders')->with(['status' => 'Referencia No existe']);
+        }
+
         if ($response->isSuccessful()) {
             if ($response->status()->isApproved()) {
                 $order->status = 'PAYED';
@@ -130,7 +139,7 @@ class OrdersController extends Controller
                 $order->status = 'REJECTED';
             }
 
-            if ($response->status()->status()=='PENDING') {
+            if ($response->status()->status() == 'PENDING') {
                 session()->forget('carrito');
             }
 
@@ -143,16 +152,17 @@ class OrdersController extends Controller
             $order->request_message = $response->status()->message();
             $order->request_date    = strftime("%F %X", strtotime($response->status()->date()));
             $order->save();
-            if ($request->home){
-                return Redirect::route('home')->with(['status' => $response->status()->message()]);    
+            if ($request->home) {
+                return Redirect::route('home')->with(['status' => $response->status()->message()]);
             }
             return Redirect::route('myOrders')->with(['status' => $response->status()->message(), 'request_status' => $response->status()->status()]);
         } else {
-            if ($request->home){
-                return Redirect::route('home')->with(['status' => $response->status()->message()]);    
+            if ($request->home) {
+                return Redirect::route('home')->with(['status' => $response->status()->message()]);
             }
             return Redirect::route('products')->with(['status' => $response->status()->message()]);
         }
+
     }
 
     /**
@@ -162,11 +172,10 @@ class OrdersController extends Controller
     public function myOrders(Request $request)
     {
         $customer = session('customer');
-        if (!$customer){
-            echo "entro";
-            $customer['email']='guess';
+        if (!$customer) {
+            $customer['email'] = 'guess';
         }
-        $orders   = Orders::with('product:id,name')
+        $orders = Orders::with('product:id,name')
             ->Where('customer_email', $customer['email'])
             ->orderBy('id', 'desc')
             ->get();

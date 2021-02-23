@@ -14,7 +14,7 @@
             @if (session('request_status') == 'REJECTED')
                 <div class="text-lg text-grey-700  px-3 py-4 mb-4">
                     Su pedido fue Cancelado, desea Intentarlo Otra Vez?
-                    <a class="underline text-blue-500 text-sm" href="{{ route('carrito') }}">
+                    <a class="underline text-blue-500 text-sm" href="{{ route('carritoList') }}">
                         Click Aqui para voolver a intentarlo
                     </a>
 
