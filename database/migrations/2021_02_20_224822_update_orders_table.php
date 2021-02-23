@@ -17,11 +17,11 @@ class UpdateOrdersTable extends Migration
             $table->integer('quantity');
             $table->decimal('amount');
             $table->datetime('request_date')->nullable();
-            $table->datetime('request_id')->nullable();
-            $table->datetime('process_url')->nullable();
+            $table->string('request_id',20)->nullable();
+            $table->string('process_url',240)->nullable();
             $table->string('reference', 32);
-            $table->string('request_message', 200);
-            $table->string('request_status', 10);
+            $table->string('request_message', 200)->nullable();
+            $table->string('request_status', 10)->nullable();;
             $table->decimal('request_amount')->nullable();
             $table->string('request_currency', 4)->nullable();
             $table->decimal('request_factor')->nullable();

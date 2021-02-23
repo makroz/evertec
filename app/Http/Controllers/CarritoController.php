@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Products;
 use Illuminate\Http\Request;
+use App\Http\Services\Carrito;
 use Illuminate\Support\Facades\Redirect;
 
 class CarritoController extends Controller
@@ -15,10 +16,8 @@ class CarritoController extends Controller
      */
     public function index()
     {
-        $carrito=['id'=>0,'quantity'=>0];
-        if (session()->has('carrito')){
-            $carrito=session('carrito');
-        }
+        $carrito=Carrito::get();
+
         $products=Products::find($carrito['id']);
         if ($products){
             $products->quantity=$carrito['quantity'];
@@ -35,19 +34,11 @@ class CarritoController extends Controller
      */
     public function store(Request $request)
     {
-        // Estamos suponiendo que solo se enviara un Unico producto en 
-        // esta prueba, sino habria que discriminar aqui para 
-        // identificar cada producto en el carrito
         if (!$request->has('id')){
             return Redirect::route('products')->with(['status' => 'No se especifico Producto']);
         }
-        $carrito=['id'=>0,'quantity'=>0];
-        if (session()->has('carrito')){
-            $carrito=session('carrito');
-        }
-        $carrito['id']=$request->id;
-        $carrito['quantity']++;
-        session(['carrito'=>$carrito]);
+       
+        Carrito::add($request->id);
         return Redirect::route('carritoList');
     }
 
@@ -59,7 +50,7 @@ class CarritoController extends Controller
      */
     public function destroy(Request $request)
     {
-        session()->forget('carrito');
+        Carrito::clear();
         return Redirect::route('products');
     }
 }

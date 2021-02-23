@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Orders;
 use App\Models\Products;
-use Dnetix\Redirection\PlacetoPay;
 use Illuminate\Http\Request;
+use App\Http\Services\Carrito;
+use Dnetix\Redirection\PlacetoPay;
 use Illuminate\Support\Facades\Redirect;
 
 class OrdersController extends Controller
@@ -16,7 +17,7 @@ class OrdersController extends Controller
      *
      * @return Objetc
      */
-    private function p2pAuth()
+    public function p2pAuth()
     {
         return new PlacetoPay([
             'login'   => config('dnetix.login'),
@@ -45,14 +46,13 @@ class OrdersController extends Controller
             return Redirect::route('carritoList')->with(['status' => 'Error de Campos']);
         }
 
-        if (session()->has('carrito')) {
-            $carrito = session('carrito');
-        } else {
-            return Redirect::route('carritoList');
+        $carrito = Carrito::get('carrito');
+        if ($carrito['quantity']==0) {
+            return Redirect::route('carritoList')->with(['status' => 'Carrito Vacio']);;
         }
 
         $products = Products::find($carrito['id']);
-
+        
         $placetopay = $this->p2pAuth();
 
         $amount    = $carrito['quantity'] * $products->price;
@@ -104,8 +104,9 @@ class OrdersController extends Controller
             $orders->request_id      = $requestId;
             $orders->process_url     = $processUrl;
             $orders->reference       = $reference;
+            session(['status'=>'llego aqui']);
             $orders->save();
-
+            session(['status'=>'llego aqui2']);
             return Redirect::to($response->processUrl());
         } else {
             return Redirect::route('carritoList')->with(['status' => $response->status()->message()]);

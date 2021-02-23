@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class RutasTest extends TestCase
@@ -28,10 +26,8 @@ class RutasTest extends TestCase
     {
         $response = $this->get(route('carritoList'));
         $response->assertStatus(200);
-        //No se especifico Producto
         $response = $this->post(route('carritoAdd'));
         $response->assertStatus(302);
-
         $response = $this->delete(route('carritoDel'));
         $response->assertStatus(302);
     }
